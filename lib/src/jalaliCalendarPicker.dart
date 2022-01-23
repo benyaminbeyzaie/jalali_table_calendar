@@ -468,6 +468,17 @@ class DayPicker extends StatelessWidget {
           // The current day gets a different text color.
           itemStyle =
               themeData.textTheme.bodyText2!.copyWith(color: Colors.red);
+        }else if(currentPDate.year! < getPearData.year! ){
+          itemStyle =
+              themeData.textTheme.bodyText2!.copyWith(color: Colors.grey);
+        }else if(currentPDate.year == getPearData.year && currentPDate.month! < getPearData.month!){
+          itemStyle =
+              themeData.textTheme.bodyText2!.copyWith(color: Colors.grey);
+        }else if(currentPDate.year == getPearData.year &&
+            currentPDate.month == getPearData.month &&
+            currentPDate.day! > day){
+          itemStyle =
+              themeData.textTheme.bodyText2!.copyWith(color: Colors.grey);
         }
         Widget dayWidget = Container(
           decoration: decoration,
@@ -514,8 +525,8 @@ class DayPicker extends StatelessWidget {
                 child: Center(
                   child: ExcludeSemantics(
                     child: Text(
-                      "${pdate.monthname}  ${pdate.year}",
-                      style: themeData.textTheme.headline6,
+                      "${pdate.monthname}",
+                      style: themeData.textTheme.headline6!.copyWith(color:themeData.primaryColor ),
                     ),
                   ),
                 ),
@@ -760,7 +771,7 @@ class _MonthPickerState extends State<MonthPicker>
           ),
           PositionedDirectional(
             top: 0.0,
-            start: 8.0,
+            start: 108.0,
             child: Semantics(
               sortKey: _MonthPickerSortKey.previousMonth,
               child: FadeTransition(
@@ -778,7 +789,7 @@ class _MonthPickerState extends State<MonthPicker>
           ),
           PositionedDirectional(
             top: 0.0,
-            end: 8.0,
+            end: 108.0,
             child: Semantics(
               sortKey: _MonthPickerSortKey.nextMonth,
               child: FadeTransition(
