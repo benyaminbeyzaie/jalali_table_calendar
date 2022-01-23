@@ -316,10 +316,16 @@ class CalendarDayPicker extends StatelessWidget {
           // The current day gets a different text color.
           itemStyle = themeData.textTheme.bodyText2!
               .copyWith(color: themeData.primaryColor);
-        } else if (getHoliday.isHoliday) {
+        } else if(currentPDate.year! > getPearData.year! ) {
+
           // The current day gets a different text color.
-          itemStyle =
-              themeData.textTheme.bodyText2!.copyWith(color: Colors.red);
+          itemStyle = themeData.textTheme.bodyText2!.copyWith(color: Colors.grey);
+        } else if(currentPDate.year == getPearData.year &&  currentPDate.month! > getPearData.month! ) {
+          // The current day gets a different text color.
+          itemStyle = themeData.textTheme.bodyText2!.copyWith(color: Colors.grey);
+        }else if(currentPDate.year == getPearData.year &&  currentPDate.month == getPearData.month && currentPDate.day! > day ) {
+          // The current day gets a different text color.
+          itemStyle = themeData.textTheme.bodyText2!.copyWith(color: Colors.grey);
         }
 
         // prepare to events to return to view
@@ -380,8 +386,8 @@ class CalendarDayPicker extends StatelessWidget {
                 child: Center(
                   child: ExcludeSemantics(
                     child: Text(
-                      "${pDate.monthname}  ${pDate.year}",
-                      style: themeData.textTheme.headline5,
+                      "${pDate.monthname}",
+                      style: themeData.textTheme.headline5!.copyWith(color: themeData.primaryColor),
                     ),
                   ),
                 ),
@@ -641,7 +647,7 @@ class _CalendarMonthPickerState extends State<CalendarMonthPicker>
         ),
         PositionedDirectional(
           top: 0.0,
-          start: 8.0,
+          start: 108.0,
           child: Semantics(
             sortKey: _MonthPickerSortKey.previousMonth,
             child: FadeTransition(
@@ -659,7 +665,7 @@ class _CalendarMonthPickerState extends State<CalendarMonthPicker>
         ),
         PositionedDirectional(
           top: 0.0,
-          end: 8.0,
+          end: 108.0,
           child: Semantics(
             sortKey: _MonthPickerSortKey.nextMonth,
             child: FadeTransition(
