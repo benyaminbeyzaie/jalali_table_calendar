@@ -316,16 +316,21 @@ class CalendarDayPicker extends StatelessWidget {
           // The current day gets a different text color.
           itemStyle = themeData.textTheme.bodyText2!
               .copyWith(color: themeData.primaryColor);
-        } else if(currentPDate.year! > getPearData.year! ) {
-
+        } else if (currentPDate.year! > getPearData.year!) {
           // The current day gets a different text color.
-          itemStyle = themeData.textTheme.bodyText2!.copyWith(color: Colors.grey);
-        } else if(currentPDate.year == getPearData.year &&  currentPDate.month! > getPearData.month! ) {
+          itemStyle =
+              themeData.textTheme.bodyText2!.copyWith(color: Colors.grey);
+        } else if (currentPDate.year == getPearData.year &&
+            currentPDate.month! > getPearData.month!) {
           // The current day gets a different text color.
-          itemStyle = themeData.textTheme.bodyText2!.copyWith(color: Colors.grey);
-        }else if(currentPDate.year == getPearData.year &&  currentPDate.month == getPearData.month && currentPDate.day! > day ) {
+          itemStyle =
+              themeData.textTheme.bodyText2!.copyWith(color: Colors.grey);
+        } else if (currentPDate.year == getPearData.year &&
+            currentPDate.month == getPearData.month &&
+            currentPDate.day! > day) {
           // The current day gets a different text color.
-          itemStyle = themeData.textTheme.bodyText2!.copyWith(color: Colors.grey);
+          itemStyle =
+              themeData.textTheme.bodyText2!.copyWith(color: Colors.grey);
         }
 
         // prepare to events to return to view
@@ -387,7 +392,8 @@ class CalendarDayPicker extends StatelessWidget {
                   child: ExcludeSemantics(
                     child: Text(
                       "${pDate.monthname}",
-                      style: themeData.textTheme.headline5!.copyWith(color: themeData.primaryColor),
+                      style: themeData.textTheme.headline5!
+                          .copyWith(color: themeData.primaryColor),
                     ),
                   ),
                 ),
@@ -689,6 +695,7 @@ class _CalendarMonthPickerState extends State<CalendarMonthPicker>
     _timer?.cancel();
     _dayPickerController?.dispose();
     calendarInitialized = false;
+    _chevronOpacityController.dispose();
     super.dispose();
   }
 }
