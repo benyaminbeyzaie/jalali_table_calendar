@@ -1059,10 +1059,10 @@ class _JalaliTableCalendarState extends State<JalaliTableCalendar> {
         'initialDate must be on or before lastDate');
     assert(
         !firstDate.isAfter(lastDate), 'lastDate must be on or after firstDate');
-    assert(
-        widget.selectableDayPredicate == null ||
-            widget.selectableDayPredicate!(initialDate),
-        'Provided initialDate must satisfy provided selectableDayPredicate');
+    // assert(
+    //     widget.selectableDayPredicate == null ||
+    //         widget.selectableDayPredicate!(initialDate),
+    //     'Provided initialDate must satisfy provided selectableDayPredicate');
     // assert(context != null);
     // assert(debugCheckHasMaterialLocalizations(context));
 
