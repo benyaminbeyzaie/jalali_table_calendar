@@ -25,6 +25,8 @@ enum DatePickerModeCalendar {
 bool calendarInitialized = false;
 //callback function when user change day
 typedef void OnDaySelected(DateTime day);
+typedef void OnNextOrPreviousMonth();
+typedef void OnRight();
 //callback function for create marker
 typedef MarkerBuilder = Widget Function(DateTime date, List? events);
 
@@ -434,6 +436,8 @@ class CalendarMonthPicker extends StatefulWidget {
     required this.onChanged,
     required this.firstDate,
     required this.lastDate,
+    this.onNextMonth,
+    this.onPreviousMonth,
     this.marker,
     this.events,
     this.selectableDayPredicate,
@@ -441,6 +445,10 @@ class CalendarMonthPicker extends StatefulWidget {
         assert(selectedDate.isAfter(firstDate) ||
             selectedDate.isAtSameMomentAs(firstDate)),
         super(key: key);
+
+  final void Function()? onNextMonth;
+
+  final void Function()? onPreviousMonth;
 
   //day marker
   final MarkerBuilder? marker;
@@ -663,8 +671,12 @@ class _CalendarMonthPickerState extends State<CalendarMonthPicker>
                 tooltip: _isDisplayingFirstMonth
                     ? null
                     : '${localizations.previousMonthTooltip} ${localizations.formatMonthYear(_previousMonthDate)}',
-                onPressed:
-                    _isDisplayingFirstMonth ? null : _handlePreviousMonth,
+                onPressed: _isDisplayingFirstMonth
+                    ? null
+                    : () {
+                        _handlePreviousMonth();
+                        widget.onPreviousMonth!();
+                      },
               ),
             ),
           ),
@@ -681,7 +693,12 @@ class _CalendarMonthPickerState extends State<CalendarMonthPicker>
                 tooltip: _isDisplayingLastMonth
                     ? null
                     : '${localizations.nextMonthTooltip} ${localizations.formatMonthYear(_nextMonthDate)}',
-                onPressed: _isDisplayingLastMonth ? null : _handleNextMonth,
+                onPressed: _isDisplayingLastMonth
+                    ? null
+                    : () {
+                        _handleNextMonth();
+                        widget.onNextMonth!();
+                      },
               ),
             ),
           ),
@@ -821,6 +838,8 @@ class _DatePickerCalendar extends StatefulWidget {
       this.convertToGregorian,
       this.initialTime,
       this.onDaySelected,
+      this.onLeft,
+      this.onRight,
       this.marker,
       this.events,
       this.hour24Format})
@@ -846,6 +865,10 @@ class _DatePickerCalendar extends StatefulWidget {
 
   /// Called whenever any day gets tapped.
   final OnDaySelected? onDaySelected;
+
+  final OnNextOrPreviousMonth? onLeft;
+
+  final OnNextOrPreviousMonth? onRight;
 
   @override
   _DatePickerCalendarState createState() => _DatePickerCalendarState();
@@ -930,6 +953,8 @@ class _DatePickerCalendarState extends State<_DatePickerCalendar> {
     switch (_mode) {
       case DatePickerModeCalendar.day:
         return CalendarMonthPicker(
+          onNextMonth: widget.onLeft,
+          onPreviousMonth: widget.onRight,
           key: _pickerKey,
           selectedDate: _selectedDate!,
           onChanged: _handleDayChanged,
@@ -1020,21 +1045,26 @@ class JalaliTableCalendar extends StatefulWidget {
   final MarkerBuilder? marker;
   final Map<DateTime, List>? events;
   final OnDaySelected? onDaySelected;
+  final OnNextOrPreviousMonth? onNextMoth;
+  final OnNextOrPreviousMonth? onPreviousMonth;
 
-  JalaliTableCalendar(
-      {required this.context,
-      this.selectableDayPredicate,
-      this.selectedFormat,
-      this.locale,
-      this.initialDatePickerMode = DatePickerModeCalendar.day,
-      this.textDirection = TextDirection.rtl,
-      this.convertToGregorian = false,
-      this.showTimePicker = false,
-      this.hour24Format = false,
-      this.initialTime,
-      this.marker,
-      this.events,
-      this.onDaySelected});
+  JalaliTableCalendar({
+    required this.context,
+    this.selectableDayPredicate,
+    this.selectedFormat,
+    this.locale,
+    this.initialDatePickerMode = DatePickerModeCalendar.day,
+    this.textDirection = TextDirection.rtl,
+    this.convertToGregorian = false,
+    this.showTimePicker = false,
+    this.hour24Format = false,
+    this.initialTime,
+    this.marker,
+    this.events,
+    this.onDaySelected,
+    this.onNextMoth,
+    this.onPreviousMonth,
+  });
 
   @override
   _JalaliTableCalendarState createState() => _JalaliTableCalendarState();
@@ -1078,6 +1108,8 @@ class _JalaliTableCalendarState extends State<JalaliTableCalendar> {
       marker: widget.marker,
       events: formattedEvents,
       onDaySelected: widget.onDaySelected,
+      onLeft: widget.onNextMoth,
+      onRight: widget.onPreviousMonth,
       convertToGregorian: widget.convertToGregorian,
       initialTime: widget.initialTime ?? TimeOfDay.now(),
     );
