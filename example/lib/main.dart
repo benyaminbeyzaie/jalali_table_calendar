@@ -60,11 +60,8 @@ class _State extends State<MyApp> {
                     JalaliTableCalendar(
                         context: context,
                         // add the events for each day
-                        onNextMoth: () {
-                          print('left');
-                        },
-                        onPreviousMonth: () {
-                          print('right');
+                        onNextOrPreviousMonth: (date) {
+                          print(date.toString());
                         },
                         events: {
                           today: ['sample event', 66546],
