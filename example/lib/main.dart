@@ -61,6 +61,7 @@ class _State extends State<MyApp> {
                         context: context,
                         // add the events for each day
                         onNextOrPreviousMonth: (date) {
+                          print('Hello world!');
                           print(date.toString());
                         },
                         events: {

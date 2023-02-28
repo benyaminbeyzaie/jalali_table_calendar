@@ -468,15 +468,16 @@ class DayPicker extends StatelessWidget {
           // The current day gets a different text color.
           itemStyle =
               themeData.textTheme.bodyText2!.copyWith(color: Colors.red);
-        }else if(currentPDate.year! < getPearData.year! ){
+        } else if (currentPDate.year! < getPearData.year!) {
           itemStyle =
               themeData.textTheme.bodyText2!.copyWith(color: Colors.grey);
-        }else if(currentPDate.year == getPearData.year && currentPDate.month! < getPearData.month!){
+        } else if (currentPDate.year == getPearData.year &&
+            currentPDate.month! < getPearData.month!) {
           itemStyle =
               themeData.textTheme.bodyText2!.copyWith(color: Colors.grey);
-        }else if(currentPDate.year == getPearData.year &&
+        } else if (currentPDate.year == getPearData.year &&
             currentPDate.month == getPearData.month &&
-            currentPDate.day! > day){
+            currentPDate.day! > day) {
           itemStyle =
               themeData.textTheme.bodyText2!.copyWith(color: Colors.grey);
         }
@@ -526,7 +527,8 @@ class DayPicker extends StatelessWidget {
                   child: ExcludeSemantics(
                     child: Text(
                       "${pdate.monthname}",
-                      style: themeData.textTheme.headline6!.copyWith(color:themeData.primaryColor ),
+                      style: themeData.textTheme.headline6!
+                          .copyWith(color: themeData.primaryColor),
                     ),
                   ),
                 ),

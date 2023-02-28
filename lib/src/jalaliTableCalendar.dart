@@ -622,8 +622,6 @@ class _CalendarMonthPickerState extends State<CalendarMonthPicker>
 
   void _handleMonthPageChanged(int monthPage) {
     setState(() {
-      widget.onNextOrPreviousMonth!(
-          _addMonthsToMonthDate(widget.firstDate, monthPage - 1));
       _previousMonthDate =
           _addMonthsToMonthDate(widget.firstDate, monthPage - 1);
       _currentDisplayedMonthDate =
@@ -653,7 +651,11 @@ class _CalendarMonthPickerState extends State<CalendarMonthPicker>
                 scrollDirection: Axis.horizontal,
                 itemCount: _monthDelta(widget.firstDate, widget.lastDate) + 1,
                 itemBuilder: _buildItems,
-                onPageChanged: _handleMonthPageChanged,
+                onPageChanged: (monthPage) {
+                  widget.onNextOrPreviousMonth!(
+                      _addMonthsToMonthDate(widget.firstDate, monthPage - 1));
+                  _handleMonthPageChanged(monthPage);
+                },
               ),
             ),
           ),
