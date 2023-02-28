@@ -481,9 +481,12 @@ class _CalendarMonthPickerState extends State<CalendarMonthPicker>
       Tween<double>(begin: 1.0, end: 0.0)
           .chain(CurveTween(curve: Curves.easeInOut));
 
+  bool? _isPageViewAnimating;
+
   @override
   void initState() {
     super.initState();
+    _isPageViewAnimating = true;
     // Initially display the pre-selected date.
     final int monthPage = _monthDelta(widget.firstDate, widget.selectedDate);
     _dayPickerController = PageController(initialPage: monthPage);
@@ -585,10 +588,15 @@ class _CalendarMonthPickerState extends State<CalendarMonthPicker>
       if (!_isDisplayingLastMonth) {
         SemanticsService.announce(
             localizations.formatMonthYear(_nextMonthDate), textDirection);
-        _dayPickerController!.nextPage(
-            duration:
-                initialized ? _kMonthScrollDuration : Duration(milliseconds: 1),
-            curve: Curves.ease);
+        _dayPickerController!
+            .nextPage(
+                duration: initialized
+                    ? _kMonthScrollDuration
+                    : Duration(milliseconds: 1),
+                curve: Curves.ease)
+            .then((value) {
+          _isPageViewAnimating = false;
+        });
       }
     } catch (e) {
       await Future.delayed(Duration(microseconds: 1));
@@ -601,7 +609,10 @@ class _CalendarMonthPickerState extends State<CalendarMonthPicker>
       SemanticsService.announce(
           localizations.formatMonthYear(_previousMonthDate), textDirection);
       _dayPickerController!
-          .previousPage(duration: _kMonthScrollDuration, curve: Curves.ease);
+          .previousPage(duration: _kMonthScrollDuration, curve: Curves.ease)
+          .then((value) {
+        _isPageViewAnimating = false;
+      });
     }
   }
 
@@ -652,8 +663,9 @@ class _CalendarMonthPickerState extends State<CalendarMonthPicker>
                 itemCount: _monthDelta(widget.firstDate, widget.lastDate) + 1,
                 itemBuilder: _buildItems,
                 onPageChanged: (monthPage) {
-                  widget.onNextOrPreviousMonth!(
-                      _addMonthsToMonthDate(widget.firstDate, monthPage - 1));
+                  if (!_isPageViewAnimating!)
+                    return widget.onNextOrPreviousMonth!(
+                        _addMonthsToMonthDate(widget.firstDate, monthPage - 1));
                   _handleMonthPageChanged(monthPage);
                 },
               ),
