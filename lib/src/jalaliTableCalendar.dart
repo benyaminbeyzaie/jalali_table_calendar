@@ -663,10 +663,11 @@ class _CalendarMonthPickerState extends State<CalendarMonthPicker>
                 itemCount: _monthDelta(widget.firstDate, widget.lastDate) + 1,
                 itemBuilder: _buildItems,
                 onPageChanged: (monthPage) {
-                  if (!_isPageViewAnimating!)
-                    return widget.onNextOrPreviousMonth!(
-                        _addMonthsToMonthDate(widget.firstDate, monthPage - 1));
-                  _handleMonthPageChanged(monthPage);
+                  if (_isPageViewAnimating!) {
+                    return;
+                  }
+                  return widget.onNextOrPreviousMonth!(
+                      _addMonthsToMonthDate(widget.firstDate, monthPage - 1));
                 },
               ),
             ),
@@ -686,13 +687,7 @@ class _CalendarMonthPickerState extends State<CalendarMonthPicker>
                     : '${localizations.previousMonthTooltip} ${localizations.formatMonthYear(_previousMonthDate)}',
                 onPressed: _isDisplayingFirstMonth
                     ? null
-                    : () {
-                        final int monthPage =
-                            _monthDelta(widget.firstDate, widget.selectedDate);
-                        _handlePreviousMonth();
-                        widget.onNextOrPreviousMonth!(_addMonthsToMonthDate(
-                            widget.firstDate, monthPage - 1));
-                      },
+                    : () => _handlePreviousMonth(),
               ),
             ),
           ),
@@ -709,15 +704,8 @@ class _CalendarMonthPickerState extends State<CalendarMonthPicker>
                 tooltip: _isDisplayingLastMonth
                     ? null
                     : '${localizations.nextMonthTooltip} ${localizations.formatMonthYear(_nextMonthDate)}',
-                onPressed: _isDisplayingLastMonth
-                    ? null
-                    : () {
-                        final int monthPage =
-                            _monthDelta(widget.firstDate, widget.selectedDate);
-                        _handleNextMonth();
-                        widget.onNextOrPreviousMonth!(_addMonthsToMonthDate(
-                            widget.firstDate, monthPage - 1));
-                      },
+                onPressed:
+                    _isDisplayingLastMonth ? null : () => _handleNextMonth(),
               ),
             ),
           ),
