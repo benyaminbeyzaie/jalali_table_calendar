@@ -663,9 +663,6 @@ class _CalendarMonthPickerState extends State<CalendarMonthPicker>
                 itemCount: _monthDelta(widget.firstDate, widget.lastDate) + 1,
                 itemBuilder: _buildItems,
                 onPageChanged: (monthPage) {
-                  if (_isPageViewAnimating!) {
-                    return;
-                  }
                   return widget.onNextOrPreviousMonth!(
                       _addMonthsToMonthDate(widget.firstDate, monthPage - 1));
                 },
